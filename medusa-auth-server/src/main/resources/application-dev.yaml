@@ -1,0 +1,86 @@
+# 数据库配置
+spring:
+  cache:
+    type: redis
+    #因为tokenStore是采用JDK序列化的，故而Auth项目的所有缓存直接引入redis-config是无法进行fastjson序列化的
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://${maven_docker.ip}:3306/auth?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      validationQuery: SELECT 1 FROM DUAL
+      validationQueryTimeout: 30
+      initialSize: 5
+      minIdle: 10
+      maxActive: 20
+      timeBetweenEvictionRunsMillis: 90000
+      minEvictableIdleTimeMillis: 180000
+      maxEvictableIdleTimeMillis: 600000
+      testOnBorrow: false
+      testOnReturn: false
+      testWhileIdle: true
+      #此属性在生产中需关闭
+      removeAbandoned: false
+      removeAbandonedTimeout: 18000
+      logAbandoned: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 100
+      keepAlive: true
+      filters: stat
+  redis:
+    database: 1
+    host: ${maven_docker.ip}
+    port: 6379
+#    password: 123456
+    timeout: 9000
+    #这里使用lettuce客户端(Spring-boot 2.x之后采用lettuce性能更高，lettuce为netty连接，而Jedis为直连)，需引入commons-pool2包
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+
+#  开启flyway
+  flyway:
+    enabled: true
+    url: jdbc:mysql://${maven_docker.ip}:3306/auth?useUnicode=true&characterEncoding=utf-8
+    encoding: UTF-8
+    user: root
+    password: 123456
+    clean-disabled: true
+    schemas: auth
+
+# oauth配置
+oauth:
+  token:
+    clientId: middle
+    clientSecret: $2a$10$7PtegA6OsLb402nVZ1C4oOTFvgE42kfnBuDuSGY7JV5plnSH7BMRm
+
+#feign的配置
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 30000
+        readTimeout: 30000
+        loggerLevel: FULL
+  hystrix:
+    enabled: false
+  httpclient:
+    enabled: true
+    connection-timeout: 30000
+  okhttp:
+    enabled: true
+
+# 日志
+logging:
+  level:
+    root: info
+    org.reflections: warn
+    com.chery.auth.rest: debug
+    com.chery.auth.core: debug
+    com.chery.auth.config: warn
+    org.springframework.data: warn
+    org.springframework.security: warn

@@ -1,0 +1,91 @@
+# 服务信息，显示在/info页面
+info:
+  name: medusa-auth-server
+  gourpId: @project.groupId@
+  artifactId: @project.artifactId@
+  version: @project.version@
+
+# web服务器端口号
+server:
+  port: 7777
+  servlet:
+    context-path: /auth
+
+# config配置
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: medusa-auth-server
+  profiles:
+    active: ${maven_spring.profiles.active}
+  #nacos配置
+  cloud:
+    nacos:
+      config:
+        enabled: false
+        server-addr: ${maven_nacos.ip}:${maven_nacos.port}
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        namespace: medusa
+      discovery:
+        enabled: true
+        namespace: medusa
+        server-addr: ${maven_nacos.ip}:${maven_nacos.port}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+  freemarker:
+    expose-request-attributes: true
+    expose-spring-macro-helpers: true
+    request-context-attribute: request
+    cache: true
+    tempalte-loader-path: classpath:/templates/
+    #springboot2.0之后，支持ftlh新格式(默认ftlh)
+    suffix: .ftlh
+    settings:
+      classic_compatible: true
+      default_encoding: UTF-8
+
+# 管理端口设置权限控制
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+# mybatis配置
+#mybatis:
+#  config-location: classpath:mybatis-config.xml
+mybatis-plus:
+  # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
+  # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
+  #  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.chery.auth.core.entity
+  #通用枚举扫描包路径配置
+  typeEnumsPackage: com.chery.auth.core.enums
+  global-config:
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",UUID:"全局唯一ID UUID";
+      id-type: AUTO
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断",NOT_EMPTY:"非空判断"
+      insert-strategy: NOT_NULL
+      update-strategy: NOT_EMPTY
+      select-strategy: NOT_EMPTY
+      #驼峰下划线转换
+      table-underline: true
+      #数据库大写下划线转换
+      capital-mode: true
+      #逻辑删除配置（下面3个配置-这里配置的是类中的实体字段名，而不是数据库字段）
+      logic-delete-field: logicDelete
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    #配置JdbcTypeForNull
+    jdbc-type-for-null: NULL
+
+encrypt:
+  failOnError: false
