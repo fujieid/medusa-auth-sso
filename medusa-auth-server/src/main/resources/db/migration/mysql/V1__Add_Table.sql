@@ -16,7 +16,8 @@ CREATE TABLE oauth_client_details (
   access_token_validity   INT           NULL COMMENT '设定客户端的access_token的有效时间值(单位:秒)',
   refresh_token_validity  INT           NULL COMMENT '设定客户端的refresh_token的有效时间值(单位:秒)',
   additional_information  NVARCHAR(256) NULL COMMENT '这是一个预留的字段,在Oauth的流程中没有实际的使用,可选,但若设置值,必须是JSON格式的数据',
-  auto_approve             NVARCHAR(256) NULL COMMENT '设置用户是否自动Approval操作, 默认值为 false, 可选值包括 true,false, read,write',
+  available               SMALLINT DEFAULT '1' COMMENT '应用程序的状态，当它为假时，不允许登录',
+  auto_approve            SMALLINT DEFAULT '1' COMMENT '设置用户是否自动Approval操作, 默认值为 false, 可选值包括 true,false, read,write',
   bind                    SMALLINT      DEFAULT '1'
 ) COMMENT '客户端信息表' ;
 

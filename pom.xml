@@ -72,6 +72,11 @@
                 <version>${medusa-common.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.chery</groupId>
+                <artifactId>medusa-redis-config</artifactId>
+                <version>${medusa-common.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.chery.auth</groupId>
                 <artifactId>medusa-auth-core</artifactId>
                 <version>${project.version}</version>

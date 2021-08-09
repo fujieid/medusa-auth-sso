@@ -20,6 +20,10 @@
             <artifactId>medusa-common-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.chery</groupId>
+            <artifactId>medusa-redis-config</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.chery.auth</groupId>
             <artifactId>medusa-auth-client</artifactId>
         </dependency>
